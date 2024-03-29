@@ -1,0 +1,101 @@
+{% extends 'address/base.html.twig' %}
+{% block content %}
+    {{ parent() }}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <a href="{{ path('app_address_create') }}" class="btn btn-success">Přidat</a>
+
+    {% if data|length > 0 %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Příjmení</th>
+            <th>Jméno</th>
+            <th>Telefon</th>
+            <th>E-mail</th>
+            <th>Akce</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in data %}
+            <tr>
+                <td>{{ item.lastName }}</td>
+                <td>{{ item.firstName }}</td>
+                <td>{{ item.phone }}</td>
+                <td>{{ item.email }}</td>
+                <td>
+                    <a
+                            data-bs-toggle="modal"
+                            data-bs-target="#noteModal"
+                            class="btn btn-outline-dark"
+                            onclick="modal('{{ item.firstName|e|e }} {{ item.lastName|e|e }}', '{{ item.note|e|e }}')"
+                    >
+                        Poznámka
+                    </a>
+                    <a
+                            href="{{ path('app_address_update', {'id': item.id, 'slug': item.slug}) }}"
+                            class="btn btn-primary"
+                    >
+                        Editovat
+                    </a>
+                    <a
+                            href="{{ path('app_address_delete', {'id': item.id, 'slug': item.slug}) }}"
+                            class="btn btn-danger"
+                    >
+                        Smazat
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item {{ page == 1 ? "disabled" : "" }}">
+                <a class="page-link" href="/?page={{ page -1 }}" tabindex="-1">Předchozí</a>
+            </li>
+            {% for number in range(1,pages) %}
+                <li class="page-item {{ page == number ? "active" : "" }}">
+                    <a class="page-link" href="/?page={{ number }}">{{ number }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item {{ page == pages ? "disabled" : "" }}">
+                <a class="page-link" href="/?page={{ page +1 }}">Další</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="noteModalLabel">...</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zavřít"></button>
+                </div>
+                <div class="modal-body" id="noteModalBody">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      function modal(title, body) {
+        document.getElementById('noteModalLabel').innerHTML = title;
+        document.getElementById('noteModalBody').innerHTML = body;
+      }
+    </script>
+    {% endif %}
+
+{% endblock %}

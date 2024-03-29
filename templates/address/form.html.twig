@@ -1,0 +1,11 @@
+{% extends 'address/base.html.twig' %}
+{% block content %}
+    {{ parent() }}
+    <div class="form">
+        {{ form(form, {
+            'action': (id ? path('app_address_update', {'id': id, 'slug': slug}) : path('app_address_create')),
+            'method': (id ? 'PUT' : 'POST'),
+        }) }}
+        <a href="{{ path('app_address_index') }}" class="btn btn-danger">Zpět</a>
+    </div>
+{% endblock %}
