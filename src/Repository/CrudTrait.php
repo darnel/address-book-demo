@@ -10,7 +10,7 @@ trait CrudTrait
      * @param object $entity
      * @return object
      */
-    public function create(object $entity)
+    public function create(object $entity): object
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
@@ -24,7 +24,7 @@ trait CrudTrait
      * @param object $entity
      * @return object
      */
-    public function update(object $entity)
+    public function update(object $entity): object
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
@@ -38,7 +38,7 @@ trait CrudTrait
      * @param object $entity
      * @return void
      */
-    public function delete(object $entity)
+    public function delete(object $entity): void
     {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();

@@ -15,7 +15,7 @@ class AddressTransformer
      * @param Entity|null $entity
      * @return Entity|null
      */
-    public function toEntity(?Model $model, ?Entity $entity = null): mixed
+    public function toEntity(?Model $model, ?Entity $entity = null): ?Entity
     {
         if (null === $model) {
             return null;
@@ -41,7 +41,7 @@ class AddressTransformer
      * @param Entity|null $entity
      * @return Model|null
      */
-    public function toModel(?Entity $entity)
+    public function toModel(?Entity $entity): ?Model
     {
         if (null === $entity) {
             return null;

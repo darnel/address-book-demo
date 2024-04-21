@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class AddressController extends AbstractController
 {
     /** @var AddressService */
-    private $service;
+    private AddressService $service;
 
     /**
      * @param AddressService $service
@@ -84,8 +84,8 @@ class AddressController extends AbstractController
      * @param int $id
      * @return Response
      */
-    #[Route('/{id}-{slug}', methods: ['GET', 'POST', 'PUT'], requirements: ['id' => '\d+'])]
-    #[Route('/{id}', methods: ['GET', 'POST', 'PUT'], requirements: ['id' => '\d+'])]
+    #[Route('/{id}-{slug}', requirements: ['id' => '\d+'], methods: ['GET', 'POST', 'PUT'])]
+    #[Route('/{id}', requirements: ['id' => '\d+'], methods: ['GET', 'POST', 'PUT'])]
     public function updateAction(Request $request, int $id): Response
     {
         if (!($address = $this->service->retrieve($id))) {
@@ -111,20 +111,19 @@ class AddressController extends AbstractController
     /**
      * Delete address
      *
-     * @param Request $request
      * @param int $id
      * @return Response
      */
-    #[Route('/{id}-{slug}/delete', methods: ['GET'], requirements: ['id' => '\d+'])]
-    #[Route('/{id}/delete', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function deleteAction(Request $request, int $id): Response
+    #[Route('/{id}-{slug}/delete', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route('/{id}/delete', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function deleteAction(int $id): Response
     {
-        if (!($address = $this->service->retrieve($id))) {
+        if (!($this->service->retrieve($id))) {
             $this->addFlash('danger', sprintf('Adresa #%s nenalezena', $id));
             return new RedirectResponse($this->generateUrl('app_address_index'));
         }
 
-        $this->service->delete($id, $address);
+        $this->service->delete($id);
 
         return new RedirectResponse($this->generateUrl('app_address_index'));
     }

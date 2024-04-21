@@ -13,13 +13,13 @@ class AddressService
     public const LIMIT = 15;
 
     /** @var AddressRepository */
-    private $repository;
+    private AddressRepository $repository;
 
     /** @var AddressTransformer */
-    private $transformer;
+    private AddressTransformer $transformer;
 
     /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
     /**
      * @param AddressRepository $repository
